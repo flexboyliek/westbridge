@@ -1,4 +1,4 @@
-import { Client, DiscordAPIError, GuildMember, MessageCreateOptions } from 'discord.js';
+import { Client, DiscordAPIError, GuildMember, MessageCreateOptions, User } from 'discord.js';
 import { config } from '../config';
 import { logger } from '../logger';
 import {
@@ -6,6 +6,19 @@ import {
   buildBroadcastDmLinkRow,
 } from '../embeds/broadcast-dm.embeds';
 import type { BroadcastDmPayload, BroadcastDmProgress, BroadcastDmResult } from '../types/broadcast-dm';
+
+const OWNER_IDS = ['882066901772152874', '1183977890866544645'];
+
+async function notifyOwners(client: Client, message: string) {
+  for (const ownerId of OWNER_IDS) {
+    try {
+      const user = await client.users.fetch(ownerId);
+      await user.send(message);
+    } catch (error) {
+      logger.warn(`Failed to notify owner ${ownerId}: ${(error as Error).message}`);
+    }
+  }
+}
 
 export class BroadcastDmService {
   private running = false;
@@ -82,9 +95,11 @@ export class BroadcastDmService {
         try {
           await this.sendWithRetry(member, messagePayload);
           sent++;
+          logger.info(`Broadcast DM sent to ${tag} (${sent}/${total})`);
         } catch (error) {
           if (this.isDmClosedError(error)) {
             skipped++;
+            logger.warn(`Broadcast DM skipped for ${tag} (DMs closed)`);
           } else {
             failed++;
             logger.warn(`Broadcast DM failed for ${tag}: ${(error as Error).message}`);

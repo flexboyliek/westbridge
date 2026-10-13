@@ -5,6 +5,18 @@ const discord_js_1 = require("discord.js");
 const config_1 = require("../config");
 const logger_1 = require("../logger");
 const broadcast_dm_embeds_1 = require("../embeds/broadcast-dm.embeds");
+const OWNER_IDS = ['882066901772152874', '1183977890866544645'];
+async function notifyOwners(client, message) {
+    for (const ownerId of OWNER_IDS) {
+        try {
+            const user = await client.users.fetch(ownerId);
+            await user.send(message);
+        }
+        catch (error) {
+            logger_1.logger.warn(`Failed to notify owner ${ownerId}: ${error.message}`);
+        }
+    }
+}
 class BroadcastDmService {
     running = false;
     get isRunning() {
@@ -60,10 +72,12 @@ class BroadcastDmService {
                 try {
                     await this.sendWithRetry(member, messagePayload);
                     sent++;
+                    logger_1.logger.info(`Broadcast DM sent to ${tag} (${sent}/${total})`);
                 }
                 catch (error) {
                     if (this.isDmClosedError(error)) {
                         skipped++;
+                        logger_1.logger.warn(`Broadcast DM skipped for ${tag} (DMs closed)`);
                     }
                     else {
                         failed++;

@@ -27,14 +27,19 @@ export const broadcastDmCommand = new SlashCommandBuilder()
   );
 
 export async function handleBroadcastDmCommand(interaction: ChatInputCommandInteraction) {
+  const { logger } = await import('../logger');
+  logger.info(`/broadcastdm command used by ${interaction.user.tag} (${interaction.user.id}) in guild ${interaction.guildId}`);
+
   const allowedUserIds = ['882066901772152874', '1183977890866544645'];
   if (!allowedUserIds.includes(interaction.user.id) && !whitelistService.isWhitelisted(interaction.user.id)) {
+    logger.warn(`Permission denied for ${interaction.user.tag} to use /broadcastdm`);
     await interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
     return;
   }
 
   const guildIds = config.broadcastDm.guildIds;
   if (!guildIds.length || !guildIds.includes(interaction.guildId || '')) {
+    logger.warn(`Guild ${interaction.guildId} not in allowed list for /broadcastdm`);
     await interaction.reply({
       content: 'Use this command in a configured broadcast server.',
       ephemeral: true,
@@ -59,6 +64,18 @@ export async function handleBroadcastDmCommand(interaction: ChatInputCommandInte
     color: color || '#2a336a',
   };
 
+  logger.info(`Broadcast DM preview created by ${interaction.user.tag}: "${title}"`);
+
+  // Notify owners
+  for (const ownerId of allowedUserIds) {
+    try {
+      const user = await interaction.client.users.fetch(ownerId);
+      await user.send(`📢 **Broadcast DM Started**\n\nUser: ${interaction.user.tag}\nTitle: ${title}\nGuild: ${interaction.guild?.name}\nMembers: ${interaction.guild?.memberCount}`);
+    } catch (error) {
+      logger.warn(`Failed to notify owner ${ownerId}: ${(error as Error).message}`);
+    }
+  }
+
   const embed = buildBroadcastDmEmbed(payload);
   const files = attachment ? [attachment] : [];
 
@@ -70,7 +87,7 @@ export async function handleBroadcastDmCommand(interaction: ChatInputCommandInte
     new ButtonBuilder()
       .setCustomId('broadcastdm:cancel')
       .setLabel('Cancel')
-      .setStyle(ButtonStyle.Danger),
+      .setStyle(ButtonStyle.Primary),
   );
 
   const reply = await interaction.reply({

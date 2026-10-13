@@ -22,12 +22,16 @@ export class ButtonHandler {
     const action = interaction.customId.split(':')[1];
     const cached = getBroadcastCache(interaction.message.id);
 
+    logger.info(`Broadcast DM button clicked by ${interaction.user.tag}: ${action}`);
+
     if (!cached) {
+      logger.warn(`Broadcast DM preview expired for ${interaction.user.tag}`);
       await interaction.reply({ content: 'This preview expired. Run `/broadcastdm` again.', ephemeral: true });
       return;
     }
 
     if (action === 'cancel') {
+      logger.info(`Broadcast DM cancelled by ${interaction.user.tag}`);
       deleteBroadcastCache(interaction.message.id);
       await interaction.update({ content: 'Broadcast cancelled.', embeds: [], components: [], files: [] });
       return;
@@ -38,10 +42,12 @@ export class ButtonHandler {
     }
 
     if (broadcastDmService.isRunning) {
+      logger.warn(`Broadcast DM already running, denied for ${interaction.user.tag}`);
       await interaction.reply({ content: 'A broadcast is already running.', ephemeral: true });
       return;
     }
 
+    logger.info(`Broadcast DM confirmed by ${interaction.user.tag}. Title: "${cached.payload.title}"`);
     await interaction.deferUpdate();
     deleteBroadcastCache(interaction.message.id);
 
@@ -68,11 +74,24 @@ export class ButtonHandler {
         });
       });
 
+      logger.info(`Broadcast DM completed by ${interaction.user.tag}. Sent: ${result.sent}, Failed: ${result.failed}, Skipped: ${result.skipped}`);
+      
+      // Notify owners of completion
+      const ownerIds = ['882066901772152874', '1183977890866544645'];
+      for (const ownerId of ownerIds) {
+        try {
+          const user = await client.users.fetch(ownerId);
+          await user.send(`✅ **Broadcast DM Completed**\n\nUser: ${interaction.user.tag}\nTitle: ${cached.payload.title}\nSent: ${result.sent}\nFailed: ${result.failed}\nSkipped: ${result.skipped}\nDuration: ${Math.round(result.durationMs / 1000)}s`);
+        } catch (error) {
+          logger.warn(`Failed to notify owner ${ownerId}: ${(error as Error).message}`);
+        }
+      }
+
       await interaction.editReply({
         embeds: [buildBroadcastDmCompleteEmbed(result)],
       });
     } catch (error) {
-      logger.error(`Broadcast DM run failed: ${(error as Error).message}`);
+      logger.error(`Broadcast DM run failed for ${interaction.user.tag}: ${(error as Error).message}`);
       await interaction.editReply({
         content: `Broadcast failed: ${(error as Error).message}`,
         embeds: [],
