@@ -3,6 +3,7 @@ import { logger } from '../logger';
 import { broadcastDmService } from '../services/broadcast-dm.service';
 import { buildBroadcastDmEmbed, buildBroadcastDmProgressEmbed, buildBroadcastDmCompleteEmbed } from '../embeds/broadcast-dm.embeds';
 import { getBroadcastCache, deleteBroadcastCache } from '../commands/broadcast-dm';
+import { getApplicationDmCache, deleteApplicationDmCache } from '../commands/application-dm';
 
 export class ButtonHandler {
   constructor(private client: Client) {}
@@ -12,6 +13,11 @@ export class ButtonHandler {
 
     if (customId.startsWith('broadcastdm:')) {
       await this.handleBroadcastDmButton(interaction, this.client);
+      return;
+    }
+
+    if (customId.startsWith('applicationdm:')) {
+      await this.handleApplicationDmButton(interaction, this.client);
       return;
     }
 
@@ -95,6 +101,50 @@ export class ButtonHandler {
       await interaction.editReply({
         content: `Broadcast failed: ${(error as Error).message}`,
         embeds: [],
+      });
+    }
+  }
+
+  private async handleApplicationDmButton(interaction: ButtonInteraction, client: Client) {
+    const action = interaction.customId.split(':')[1];
+    const cached = getApplicationDmCache(interaction.user.id);
+
+    if (!cached) {
+      await interaction.reply({ content: 'This session expired. Run `/applicationdm` again.', ephemeral: true });
+      return;
+    }
+
+    if (action === 'cancel') {
+      deleteApplicationDmCache(interaction.user.id);
+      await interaction.update({ content: 'Application DM cancelled.', embeds: [], components: [] });
+      return;
+    }
+
+    if (action !== 'confirm') {
+      return;
+    }
+
+    await interaction.deferUpdate();
+    deleteApplicationDmCache(interaction.user.id);
+
+    try {
+      const recipient = await client.users.fetch(cached.recipientId);
+      await recipient.send(cached.customMessage || '');
+
+      logger.info(`Application DM sent by ${cached.staffName} to ${recipient.tag}. Type: ${cached.type}`);
+      
+      await interaction.editReply({
+        content: `✅ Successfully sent DM to ${recipient.tag}!`,
+        embeds: [],
+        components: [],
+      });
+    } catch (error) {
+      logger.error(`Application DM failed for ${cached.recipientId}: ${(error as Error).message}`);
+      
+      await interaction.editReply({
+        content: `❌ Failed to send DM. The user may have DMs disabled or has blocked the bot.`,
+        embeds: [],
+        components: [],
       });
     }
   }

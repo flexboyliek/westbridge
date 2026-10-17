@@ -7,6 +7,7 @@ import { config } from '../config';
 import { logger } from '../logger';
 import { ButtonHandler } from '../handlers/button-handler';
 import { CommandHandler } from '../handlers/command-handler';
+import { handleApplicationDmModal } from '../commands/application-dm';
 
 export class BotClient {
   readonly client: Client;
@@ -61,6 +62,13 @@ export class BotClient {
         if (interaction.isButton()) {
           await this.buttonHandler.handle(interaction);
           return;
+        }
+
+        if (interaction.isModalSubmit()) {
+          if (interaction.customId === 'applicationdm:custom') {
+            await handleApplicationDmModal(interaction);
+            return;
+          }
         }
       } catch (error) {
         logger.error(`Interaction failed: ${(error as Error).message}`);

@@ -6,6 +6,7 @@ const config_1 = require("../config");
 const logger_1 = require("../logger");
 const button_handler_1 = require("../handlers/button-handler");
 const command_handler_1 = require("../handlers/command-handler");
+const application_dm_1 = require("../commands/application-dm");
 class BotClient {
     client;
     commandHandler;
@@ -53,6 +54,12 @@ class BotClient {
                 if (interaction.isButton()) {
                     await this.buttonHandler.handle(interaction);
                     return;
+                }
+                if (interaction.isModalSubmit()) {
+                    if (interaction.customId === 'applicationdm:custom') {
+                        await (0, application_dm_1.handleApplicationDmModal)(interaction);
+                        return;
+                    }
                 }
             }
             catch (error) {

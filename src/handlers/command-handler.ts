@@ -10,6 +10,7 @@ import { logger } from '../logger';
 import { broadcastDmCommand, handleBroadcastDmCommand } from '../commands/broadcast-dm';
 import { whitelistCommand, handleWhitelistCommand } from '../commands/whitelist';
 import { unwhitelistCommand, handleUnwhitelistCommand } from '../commands/unwhitelist';
+import { applicationDmCommand, handleApplicationDmCommand } from '../commands/application-dm';
 
 type CommandHandlerFn = (
   interaction: ChatInputCommandInteraction,
@@ -22,6 +23,7 @@ export class CommandHandler {
     this.commands.set(broadcastDmCommand.name, handleBroadcastDmCommand);
     this.commands.set(whitelistCommand.name, handleWhitelistCommand);
     this.commands.set(unwhitelistCommand.name, handleUnwhitelistCommand);
+    this.commands.set(applicationDmCommand.name, handleApplicationDmCommand);
   }
 
   async registerSlashCommands() {
@@ -54,6 +56,7 @@ export class CommandHandler {
       broadcastDmCommand.toJSON(),
       whitelistCommand.toJSON(),
       unwhitelistCommand.toJSON(),
+      applicationDmCommand.toJSON(),
     ];
 
     logger.info(`Registering ${commandPayload.length} global commands...`);
