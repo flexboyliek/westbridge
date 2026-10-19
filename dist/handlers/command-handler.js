@@ -8,7 +8,6 @@ const broadcast_dm_1 = require("../commands/broadcast-dm");
 const whitelist_1 = require("../commands/whitelist");
 const unwhitelist_1 = require("../commands/unwhitelist");
 const application_dm_1 = require("../commands/application-dm");
-const bridge_1 = require("../commands/bridge");
 class CommandHandler {
     client;
     commands = new discord_js_1.Collection();
@@ -18,7 +17,6 @@ class CommandHandler {
         this.commands.set(whitelist_1.whitelistCommand.name, whitelist_1.handleWhitelistCommand);
         this.commands.set(unwhitelist_1.unwhitelistCommand.name, unwhitelist_1.handleUnwhitelistCommand);
         this.commands.set(application_dm_1.applicationDmCommand.name, application_dm_1.handleApplicationDmCommand);
-        this.commands.set(bridge_1.bridgeCommand.name, bridge_1.handleBridgeCommand);
     }
     async registerSlashCommands() {
         const rest = new discord_js_1.REST({ version: '10' }).setToken(config_1.config.token);
@@ -48,7 +46,6 @@ class CommandHandler {
             whitelist_1.whitelistCommand.toJSON(),
             unwhitelist_1.unwhitelistCommand.toJSON(),
             application_dm_1.applicationDmCommand.toJSON(),
-            bridge_1.bridgeCommand.toJSON(),
         ];
         logger_1.logger.info(`Registering ${commandPayload.length} global commands...`);
         console.log(`Registering ${commandPayload.length} global commands...`);

@@ -4,28 +4,6 @@ A comprehensive Discord bot built with TypeScript and discord.js v14 for server 
 
 ## Features
 
-### Voice Bridge (Experimental)
-- `/bridge setup` - Configure source and destination voice channels
-- `/bridge start` - Start the one-way voice bridge
-- `/bridge stop` - Stop the voice bridge
-- `/bridge status` - Check bridge status
-
-**IMPORTANT TECHNICAL LIMITATIONS:**
-The voice bridge feature uses experimental Discord.js voice receiving functionality. Due to Discord's voice architecture:
-- Audio receiving is NOT officially supported by Discord
-- The implementation may not work consistently or may break without warning
-- Proper audio format conversion (Opus → PCM → Opus) is not implemented
-- Multi-speaker mixing is not supported
-- This is a structural implementation demonstrating the architecture
-- For production use, consider dedicated voice bridge solutions
-
-**Required Bot Permissions:**
-- Connect to voice channels (both servers)
-- Speak in destination voice channel
-- View voice channels
-
-**Audio Direction:** One-way only (Source → Destination). Destination cannot transmit back to source.
-
 ### Ticket System
 - `/support-panel` - Send support ticket panel to support channel
 - Ticket types: General Support, Content Creator, Claim Your Rank
@@ -132,7 +110,6 @@ In the [Discord Developer Portal](https://discord.com/developers/applications), 
 
 - **Message Content Intent** (required for DM functionality)
 - **Server Members Intent** (required for fetching members)
-- **Guild Voice States** (required for voice bridge)
 
 ### 4. Bot permissions
 
@@ -144,8 +121,6 @@ The bot needs:
 - Manage Channels (for ticket system)
 - Manage Roles (for staff applications)
 - Manage Messages (for moderation)
-- Connect to voice channels (for voice bridge)
-- Speak in voice channels (for voice bridge)
 
 ### 5. Run locally
 
@@ -204,7 +179,6 @@ src/
 │   ├── dmall.ts                 Mass DM command
 │   ├── announcement.ts          Announcement command
 │   ├── embed.ts                 Embed command
-│   ├── bridge.ts                Voice bridge command
 │   └── ...                      Other commands
 ├── handlers/
 │   ├── command-handler.ts       Slash command routing
@@ -227,46 +201,6 @@ src/
 ```
 
 ## Commands
-
-### Voice Bridge Commands
-
-#### /bridge setup
-Configure the source and destination voice channels for the bridge (admin only).
-
-**Usage:** `/bridge setup source_channel: #source-voice destination_channel: #destination-voice`
-
-**Requirements:**
-- Both channels must be voice channels
-- Channels must be in different servers
-- Bot must have Connect permission in both channels
-- Bot must have Speak permission in destination channel
-
-#### /bridge start
-Start the one-way voice bridge (admin only).
-
-**Requirements:**
-- Bridge must be configured with `/bridge setup`
-- Bot must have access to both channels
-- Both voice connections must be established successfully
-
-#### /bridge stop
-Stop the voice bridge (admin only).
-
-**Behavior:**
-- Stops receiving new audio
-- Disconnects from both voice channels
-- Clears audio queues
-- Releases all resources
-
-#### /bridge status
-Check the current bridge status (admin only).
-
-**Shows:**
-- Whether bridge is running
-- Source and destination channels
-- Connection status
-- Number of active speakers
-- Any errors
 
 ### Ticket Commands
 
@@ -329,8 +263,6 @@ Send a DM to a specific user (staff only).
 ## Dependencies
 
 - discord.js v14
-- @discordjs/voice (for voice bridge)
-- libsodium-wrappers (for voice bridge)
 - discord-html-transcripts
 - googleapis
 - dotenv

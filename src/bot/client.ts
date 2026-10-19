@@ -8,7 +8,6 @@ import { logger } from '../logger';
 import { ButtonHandler } from '../handlers/button-handler';
 import { CommandHandler } from '../handlers/command-handler';
 import { handleApplicationDmModal } from '../commands/application-dm';
-import { initializeBridgeService } from '../services/bridge.service';
 
 export class BotClient {
   readonly client: Client;
@@ -23,7 +22,6 @@ export class BotClient {
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.DirectMessages,
         GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildVoiceStates,
       ],
       partials: [Partials.Channel, Partials.Message],
     });
@@ -42,9 +40,6 @@ export class BotClient {
     this.client.once('ready', async () => {
       logger.info(`Bot is online as ${this.client.user?.tag ?? 'unknown'}`);
       console.log(`Bot is online as ${this.client.user?.tag ?? 'unknown'}`);
-      
-      // Initialize bridge service with client
-      initializeBridgeService(this.client);
       
       logger.info(`Attempting to register slash commands...`);
       console.log(`Attempting to register slash commands...`);

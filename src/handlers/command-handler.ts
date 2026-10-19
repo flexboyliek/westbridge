@@ -11,7 +11,6 @@ import { broadcastDmCommand, handleBroadcastDmCommand } from '../commands/broadc
 import { whitelistCommand, handleWhitelistCommand } from '../commands/whitelist';
 import { unwhitelistCommand, handleUnwhitelistCommand } from '../commands/unwhitelist';
 import { applicationDmCommand, handleApplicationDmCommand } from '../commands/application-dm';
-import { bridgeCommand, handleBridgeCommand } from '../commands/bridge';
 
 type CommandHandlerFn = (
   interaction: ChatInputCommandInteraction,
@@ -25,7 +24,6 @@ export class CommandHandler {
     this.commands.set(whitelistCommand.name, handleWhitelistCommand);
     this.commands.set(unwhitelistCommand.name, handleUnwhitelistCommand);
     this.commands.set(applicationDmCommand.name, handleApplicationDmCommand);
-    this.commands.set(bridgeCommand.name, handleBridgeCommand);
   }
 
   async registerSlashCommands() {
@@ -59,7 +57,6 @@ export class CommandHandler {
       whitelistCommand.toJSON(),
       unwhitelistCommand.toJSON(),
       applicationDmCommand.toJSON(),
-      bridgeCommand.toJSON(),
     ];
 
     logger.info(`Registering ${commandPayload.length} global commands...`);
