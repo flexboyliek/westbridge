@@ -84,7 +84,7 @@ export async function handleApplicationDmCommand(interaction: ChatInputCommandIn
 
   const messages: Record<string, string> = {
     review: '**Application Update**\n\nHello! We wanted to let you know that your application is currently being reviewed by our team. Please remain patient while we complete the review process.\n\nThank you for your interest in joining our team!',
-    email: '**Important Application Update**\n\nHello! Please check the email address you provided with your application. You should have received an important message from our team.\n\nPlease review your email as soon as possible.',
+    email: '**Westbridge Innovation Academy — Application Received**\n\nGreetings!\n\nThank you for submitting your application to Westbridge Innovation Academy! We are pleased to confirm that **your application has been received** and is currently awaiting review.\n\nOur administration team will be reaching out with a response soon. In the meantime, please **check your website mainbox and dashboard regularly** for updates, notifications, and any additional information regarding your application.\n\nWe appreciate your interest in joining the Westbridge Lions family and thank you for your patience throughout the hiring process!\n\nSincerely,\n**Westbridge Innovation Academy Administration 🦁**',
   };
 
   const message = messages[type];
