@@ -7,6 +7,7 @@ const logger_1 = require("../logger");
 const button_handler_1 = require("../handlers/button-handler");
 const command_handler_1 = require("../handlers/command-handler");
 const application_dm_1 = require("../commands/application-dm");
+const bridge_service_1 = require("../services/bridge.service");
 class BotClient {
     client;
     commandHandler;
@@ -19,6 +20,7 @@ class BotClient {
                 discord_js_1.GatewayIntentBits.GuildMembers,
                 discord_js_1.GatewayIntentBits.DirectMessages,
                 discord_js_1.GatewayIntentBits.MessageContent,
+                discord_js_1.GatewayIntentBits.GuildVoiceStates,
             ],
             partials: [discord_js_1.Partials.Channel, discord_js_1.Partials.Message],
         });
@@ -33,6 +35,8 @@ class BotClient {
         this.client.once('ready', async () => {
             logger_1.logger.info(`Bot is online as ${this.client.user?.tag ?? 'unknown'}`);
             console.log(`Bot is online as ${this.client.user?.tag ?? 'unknown'}`);
+            // Initialize bridge service with client
+            (0, bridge_service_1.initializeBridgeService)(this.client);
             logger_1.logger.info(`Attempting to register slash commands...`);
             console.log(`Attempting to register slash commands...`);
             try {
