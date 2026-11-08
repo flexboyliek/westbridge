@@ -16,8 +16,7 @@ exports.roleAddCommand = new discord_js_1.SlashCommandBuilder()
     .setRequired(true))
     .addStringOption((option) => option.setName('reason')
     .setDescription('Reason for adding the role')
-    .setRequired(false))
-    .setDefaultMemberPermissions(discord_js_1.PermissionFlagsBits.ManageRoles);
+    .setRequired(false));
 async function handleRoleAddCommand(interaction) {
     if (!interaction.member) {
         await interaction.reply({ content: 'This command can only be used in a server.', ephemeral: true });

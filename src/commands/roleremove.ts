@@ -24,8 +24,7 @@ export const roleRemoveCommand = new SlashCommandBuilder()
     option.setName('reason')
       .setDescription('Reason for removing the role')
       .setRequired(false),
-  )
-  .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles);
+  );
 
 export async function handleRoleRemoveCommand(interaction: ChatInputCommandInteraction) {
   if (!interaction.member) {

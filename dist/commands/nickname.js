@@ -13,8 +13,7 @@ exports.nicknameCommand = new discord_js_1.SlashCommandBuilder()
     .setRequired(true))
     .addStringOption((option) => option.setName('nickname')
     .setDescription('The new nickname')
-    .setRequired(true))
-    .setDefaultMemberPermissions(discord_js_1.PermissionFlagsBits.ManageNicknames);
+    .setRequired(true));
 async function handleNicknameCommand(interaction) {
     if (!interaction.member) {
         await interaction.reply({ content: 'This command can only be used in a server.', ephemeral: true });

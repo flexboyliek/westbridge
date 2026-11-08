@@ -13,8 +13,7 @@ exports.kickCommand = new discord_js_1.SlashCommandBuilder()
     .setRequired(true))
     .addStringOption((option) => option.setName('reason')
     .setDescription('Reason for the kick')
-    .setRequired(false))
-    .setDefaultMemberPermissions(discord_js_1.PermissionFlagsBits.KickMembers);
+    .setRequired(false));
 async function handleKickCommand(interaction) {
     if (!interaction.member) {
         await interaction.reply({ content: 'This command can only be used in a server.', ephemeral: true });

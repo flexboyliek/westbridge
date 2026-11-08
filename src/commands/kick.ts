@@ -18,8 +18,7 @@ export const kickCommand = new SlashCommandBuilder()
     option.setName('reason')
       .setDescription('Reason for the kick')
       .setRequired(false),
-  )
-  .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers);
+  );
 
 export async function handleKickCommand(interaction: ChatInputCommandInteraction) {
   if (!interaction.member) {

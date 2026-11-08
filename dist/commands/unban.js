@@ -13,8 +13,7 @@ exports.unbanCommand = new discord_js_1.SlashCommandBuilder()
     .setRequired(true))
     .addStringOption((option) => option.setName('reason')
     .setDescription('Reason for the unban')
-    .setRequired(false))
-    .setDefaultMemberPermissions(discord_js_1.PermissionFlagsBits.BanMembers);
+    .setRequired(false));
 async function handleUnbanCommand(interaction) {
     if (!interaction.member) {
         await interaction.reply({ content: 'This command can only be used in a server.', ephemeral: true });

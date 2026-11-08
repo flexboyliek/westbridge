@@ -25,8 +25,7 @@ export const banCommand = new SlashCommandBuilder()
       .setRequired(false)
       .setMinValue(0)
       .setMaxValue(7),
-  )
-  .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers);
+  );
 
 export async function handleBanCommand(interaction: ChatInputCommandInteraction) {
   if (!interaction.member) {

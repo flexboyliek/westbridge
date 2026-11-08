@@ -23,8 +23,7 @@ export const timeoutCommand = new SlashCommandBuilder()
     option.setName('reason')
       .setDescription('Reason for the timeout')
       .setRequired(false),
-  )
-  .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers);
+  );
 
 export async function handleTimeoutCommand(interaction: ChatInputCommandInteraction) {
   if (!interaction.member) {

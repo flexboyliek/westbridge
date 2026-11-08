@@ -18,8 +18,7 @@ export const muteCommand = new SlashCommandBuilder()
     option.setName('reason')
       .setDescription('Reason for the mute')
       .setRequired(false),
-  )
-  .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers);
+  );
 
 export async function handleMuteCommand(interaction: ChatInputCommandInteraction) {
   if (!interaction.member) {

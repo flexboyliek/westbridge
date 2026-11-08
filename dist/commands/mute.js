@@ -13,8 +13,7 @@ exports.muteCommand = new discord_js_1.SlashCommandBuilder()
     .setRequired(true))
     .addStringOption((option) => option.setName('reason')
     .setDescription('Reason for the mute')
-    .setRequired(false))
-    .setDefaultMemberPermissions(discord_js_1.PermissionFlagsBits.ModerateMembers);
+    .setRequired(false));
 async function handleMuteCommand(interaction) {
     if (!interaction.member) {
         await interaction.reply({ content: 'This command can only be used in a server.', ephemeral: true });

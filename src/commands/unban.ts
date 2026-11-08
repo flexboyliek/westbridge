@@ -18,8 +18,7 @@ export const unbanCommand = new SlashCommandBuilder()
     option.setName('reason')
       .setDescription('Reason for the unban')
       .setRequired(false),
-  )
-  .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers);
+  );
 
 export async function handleUnbanCommand(interaction: ChatInputCommandInteraction) {
   if (!interaction.member) {

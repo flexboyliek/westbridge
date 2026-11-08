@@ -24,8 +24,7 @@ export const roleAddCommand = new SlashCommandBuilder()
     option.setName('reason')
       .setDescription('Reason for adding the role')
       .setRequired(false),
-  )
-  .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles);
+  );
 
 export async function handleRoleAddCommand(interaction: ChatInputCommandInteraction) {
   if (!interaction.member) {

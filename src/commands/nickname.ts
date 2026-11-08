@@ -18,8 +18,7 @@ export const nicknameCommand = new SlashCommandBuilder()
     option.setName('nickname')
       .setDescription('The new nickname')
       .setRequired(true),
-  )
-  .setDefaultMemberPermissions(PermissionFlagsBits.ManageNicknames);
+  );
 
 export async function handleNicknameCommand(interaction: ChatInputCommandInteraction) {
   if (!interaction.member) {

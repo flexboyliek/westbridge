@@ -18,8 +18,7 @@ exports.banCommand = new discord_js_1.SlashCommandBuilder()
     .setDescription('Delete messages from the past X days (0-7)')
     .setRequired(false)
     .setMinValue(0)
-    .setMaxValue(7))
-    .setDefaultMemberPermissions(discord_js_1.PermissionFlagsBits.BanMembers);
+    .setMaxValue(7));
 async function handleBanCommand(interaction) {
     if (!interaction.member) {
         await interaction.reply({ content: 'This command can only be used in a server.', ephemeral: true });

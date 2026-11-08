@@ -18,8 +18,7 @@ export const unmuteCommand = new SlashCommandBuilder()
     option.setName('reason')
       .setDescription('Reason for the unmute')
       .setRequired(false),
-  )
-  .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers);
+  );
 
 export async function handleUnmuteCommand(interaction: ChatInputCommandInteraction) {
   if (!interaction.member) {
