@@ -11,6 +11,16 @@ import { broadcastDmCommand, handleBroadcastDmCommand } from '../commands/broadc
 import { whitelistCommand, handleWhitelistCommand } from '../commands/whitelist';
 import { unwhitelistCommand, handleUnwhitelistCommand } from '../commands/unwhitelist';
 import { applicationDmCommand, handleApplicationDmCommand } from '../commands/application-dm';
+import { banCommand, handleBanCommand } from '../commands/ban';
+import { kickCommand, handleKickCommand } from '../commands/kick';
+import { timeoutCommand, handleTimeoutCommand } from '../commands/timeout';
+import { warnCommand, handleWarnCommand } from '../commands/warn';
+import { muteCommand, handleMuteCommand } from '../commands/mute';
+import { unmuteCommand, handleUnmuteCommand } from '../commands/unmute';
+import { unbanCommand, handleUnbanCommand } from '../commands/unban';
+import { nicknameCommand, handleNicknameCommand } from '../commands/nickname';
+import { roleAddCommand, handleRoleAddCommand } from '../commands/roleadd';
+import { roleRemoveCommand, handleRoleRemoveCommand } from '../commands/roleremove';
 
 type CommandHandlerFn = (
   interaction: ChatInputCommandInteraction,
@@ -24,6 +34,16 @@ export class CommandHandler {
     this.commands.set(whitelistCommand.name, handleWhitelistCommand);
     this.commands.set(unwhitelistCommand.name, handleUnwhitelistCommand);
     this.commands.set(applicationDmCommand.name, handleApplicationDmCommand);
+    this.commands.set(banCommand.name, handleBanCommand);
+    this.commands.set(kickCommand.name, handleKickCommand);
+    this.commands.set(timeoutCommand.name, handleTimeoutCommand);
+    this.commands.set(warnCommand.name, handleWarnCommand);
+    this.commands.set(muteCommand.name, handleMuteCommand);
+    this.commands.set(unmuteCommand.name, handleUnmuteCommand);
+    this.commands.set(unbanCommand.name, handleUnbanCommand);
+    this.commands.set(nicknameCommand.name, handleNicknameCommand);
+    this.commands.set(roleAddCommand.name, handleRoleAddCommand);
+    this.commands.set(roleRemoveCommand.name, handleRoleRemoveCommand);
   }
 
   async registerSlashCommands() {
@@ -57,6 +77,16 @@ export class CommandHandler {
       whitelistCommand.toJSON(),
       unwhitelistCommand.toJSON(),
       applicationDmCommand.toJSON(),
+      banCommand.toJSON(),
+      kickCommand.toJSON(),
+      timeoutCommand.toJSON(),
+      warnCommand.toJSON(),
+      muteCommand.toJSON(),
+      unmuteCommand.toJSON(),
+      unbanCommand.toJSON(),
+      nicknameCommand.toJSON(),
+      roleAddCommand.toJSON(),
+      roleRemoveCommand.toJSON(),
     ];
 
     logger.info(`Registering ${commandPayload.length} global commands...`);
