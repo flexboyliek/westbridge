@@ -87,4 +87,9 @@ export const config = {
       message: process.env.TICKET_BUSY_MESSAGE || '**Reduced Support Capacity**\n\nSupport operations are currently running at reduced capacity. We have successfully received your ticket, but please anticipate a longer response time than usual.\n\nOur team is working to address inquiries in the order they were received. We appreciate your patience during this period of high volume.',
     },
   },
+
+  // Moderation Configuration
+  moderation: {
+    roleId: process.env.MODERATION_ROLE_ID || '1569089572028026900',
+  },
 };

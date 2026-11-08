@@ -4,7 +4,7 @@ exports.roleRemoveCommand = void 0;
 exports.handleRoleRemoveCommand = handleRoleRemoveCommand;
 const discord_js_1 = require("discord.js");
 const logger_1 = require("../logger");
-const MODERATION_ROLE_ID = '1569089572028026900';
+const config_1 = require("../config");
 exports.roleRemoveCommand = new discord_js_1.SlashCommandBuilder()
     .setName('roleremove')
     .setDescription('Remove a role from a user')
@@ -24,7 +24,7 @@ async function handleRoleRemoveCommand(interaction) {
         return;
     }
     const member = interaction.member;
-    if (!member.roles.cache.has(MODERATION_ROLE_ID)) {
+    if (!member.roles.cache.has(config_1.config.moderation.roleId)) {
         await interaction.reply({ content: 'You must have the Westbridge Moderation role to use this command.', ephemeral: true });
         return;
     }

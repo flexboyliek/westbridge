@@ -4,8 +4,7 @@ import {
   PermissionFlagsBits,
 } from 'discord.js';
 import { logger } from '../logger';
-
-const MODERATION_ROLE_ID = '1569089572028026900';
+import { config } from '../config';
 
 export const banCommand = new SlashCommandBuilder()
   .setName('ban')
@@ -36,7 +35,7 @@ export async function handleBanCommand(interaction: ChatInputCommandInteraction)
   }
 
   const member = interaction.member as any;
-  if (!member.roles.cache.has(MODERATION_ROLE_ID)) {
+  if (!member.roles.cache.has(config.moderation.roleId)) {
     await interaction.reply({ content: 'You must have the Westbridge Moderation role to use this command.', ephemeral: true });
     return;
   }
